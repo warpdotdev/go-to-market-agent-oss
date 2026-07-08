@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: plg_upsell_domain_scores_daily
+    description: >
+      Append-only daily snapshot of PQL scores for all domains that have ever been eligible
+      for PLG upsell outreach. Once a domain enters the scored universe, it gets a row every
+      day — even if it later drops eligibility (score goes to 0 with an ineligibility_reason).
+      Raw metrics are computed for all domains regardless of eligibility so usage trends remain
+      visible. Percentile-based scores are computed only among currently eligible domains.
+    config:
+      materialized: incremental
+      unique_key: ['email_domain', 'scored_date']
+      partition_by:
+        field: scored_date
+        data_type: date
+        granularity: day
+      cluster_by: ['email_domain']
+    columns:
+      - name: scored_date
+        description: Date this snapshot was computed.
+      - name: email_domain
+        description: The domain being scored (e.g. acme.com).
+      - name: is_eligible
+        description: >
+          TRUE if the domain passes all four eligibility filters today.
+          FALSE if it was previously eligible but now fails one or more filters.
+      - name: ineligibility_reason
+        description: >
+          NULL when eligible. When not eligible, one of:
+          excluded_domain, below_active_user_threshold, no_active_paid_plan,
+          entered_enterprise_pipeline, unknown.
+      - name: pql_score
+        description: Composite PQL score (0–100). 0 for ineligible domains.
+      - name: breadth_score
+        description: Breadth component score (0–100). Based on avg WAU percentile. 0 for ineligible.
+      - name: depth_score
+        description: Depth component score (0–100). Weighted blend of total usage-unit and per-user usage percentiles. 0 for ineligible.
+      - name: velocity_score
+        description: Velocity component score (0–100). Based on WoW usage growth percentile. 0 for ineligible.
+      - name: urgency_score
+        description: Urgency component score (0–100). Weighted blend of limit hits, overage purchases, upgrades, domain growth percentiles. 0 for ineligible.
+      - name: avg_wau
+        description: Average weekly active users over last 4 complete weeks. Computed for all domains.
+      - name: total_credits_30d
+        description: Total usage units consumed in last 30 days (example: AI credits). Computed for all domains. Name kept stable for downstream compatibility.
+      - name: credits_per_user_30d
+        description: Usage units per user in last 30 days (example: AI credits). Computed for all domains. Name kept stable for downstream compatibility.
+      - name: wow_growth_pct
+        description: Average week-over-week usage growth as a percentage. Computed for all domains.
+      - name: weeks_growing
+        description: Number of weeks (out of last 4) with positive usage growth.
+      - name: limit_hits
+        description: Total usage-limit hit events in last 14 days.
+      - name: users_hitting_limits
+        description: Distinct users hitting usage limits in last 14 days.
+      - name: reload_dollars
+        description: Total overage / add-on purchase amount in last 14 days. Name kept stable for downstream compatibility.
+      - name: reload_count
+        description: Number of overage / add-on purchases in last 14 days.
+      - name: users_upgraded
+        description: Users upgrading from free to paid in last 30 days.
+      - name: new_domain_members
+        description: New members joining domain teams in last 14 days.
+      - name: company_name
+        description: Company name from firmographic enrichment (NULL if not enriched).
+      - name: industry
+        description: Industry from firmographic enrichment (NULL if not enriched).
+      - name: company_size
+        description: Company size from firmographic enrichment (NULL if not enriched).
+      - name: country
+        description: Country from firmographic enrichment (NULL if not enriched).
+      - name: active_users_last_30d
+        description: Count of non-excluded users active in last 30 days (even if below threshold).
+      - name: first_eligible_date
+        description: Date this domain first entered the eligible pool.
+      - name: days_in_pool
+        description: Days since first eligibility (scored_date - first_eligible_date).

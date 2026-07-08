@@ -1,0 +1,76 @@
+{
+  "skill_name": "bdr-self-improvement",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run the weekday BDR Self-Improvement Agent for yesterday. The review channel only has parent messages with eyes reactions and no text replies. No sent-email deltas are available.",
+      "expected_output": "The agent should classify the window as no-signal, make no guide edits, open no PR, write nothing to HubSpot, and end silently.",
+      "files": [
+        "references/outreach_positioning_guide.md",
+        "references/outreach_style_guide.md"
+      ],
+      "assertions": [
+        "Does not create or modify any guide files when only no-signal events are present.",
+        "Does not post a Slack update when no PR is opened.",
+        "Does not attempt HubSpot writeback."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Run the BDR Self-Improvement Agent for a window with five unrelated Slack threads where BDRs changed vague language like 'infrastructure side' into concrete product mechanisms such as Slack-triggered cloud runs, reviewable sessions, and managed environments. The current positioning guide mentions concreteness but examples are stale.",
+      "expected_output": "The agent should route the pattern to the positioning guide, edit the existing concreteness guidance or examples rather than create a new pattern library, validate the diff, and open one PR with evidence summary and reviewers.",
+      "files": [
+        "references/outreach_positioning_guide.md"
+      ],
+      "assertions": [
+        "Only the positioning guide is changed unless style evidence independently warrants a style edit.",
+        "The edit sharpens existing guidance instead of appending duplicate bullets.",
+        "The PR body summarizes generalized evidence without raw private Slack dumps.",
+        "The PR body includes the Oz co-author line."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run the scheduled learner after a marketing repo update changes current platform website copy around scheduled agents and cloud runs in src/content/pages/platform.md for https://example.com/platform. There is no Slack feedback, but the existing positioning guide now has outdated wording about triggers.",
+      "expected_output": "The agent should treat the reviewed marketing repo as positioning evidence, update only stale positioning-guide language if the change is broadly relevant to BDR outreach, validate, and open one PR. It should not touch the style guide.",
+      "files": [
+        "references/outreach_positioning_guide.md"
+      ],
+      "assertions": [
+        "Uses reviewed source-copy changes as positioning evidence.",
+        "Does not modify the style guide for a pure positioning-source update.",
+        "Does not scrape unrelated websites or create generated prospect-copy files.",
+        "Opens at most one PR."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Run the scheduled learner for a window where one BDR says 'for this lead only, avoid mentioning the webinar because I know them personally' and another says 'the guide already says not to say infrastructure side.'",
+      "expected_output": "The agent should classify one item as lead-specific and the other as redundant, make no durable guide edits, open no PR, and end silently.",
+      "files": [
+        "references/outreach_style_guide.md",
+        "references/outreach_positioning_guide.md"
+      ],
+      "assertions": [
+        "Lead-specific feedback is not promoted into durable guidance.",
+        "Redundant feedback does not create duplicate guide text.",
+        "No PR is opened when all evidence is lead-specific or redundant."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run the scheduled learner for a source-only review. The schedule prompt says to use the bdr-self-improvement skill. Review only the canonical positioning routes: https://example.com/, https://example.com/enterprise, https://example.com/product, https://example.com/agents, and https://example.com/platform.",
+      "expected_output": "The agent should inspect only the corresponding [your-marketing-repo] source files named in the skill, use the public URLs as route labels, skip unrelated marketing pages, docs, changelogs, launch copy, blogs, and versioned experiment pages, and open no PR unless one of those configured sources contradicts the durable BDR guides.",
+      "files": [
+        "references/outreach_positioning_guide.md",
+        "references/outreach_style_guide.md"
+      ],
+      "assertions": [
+        "Uses repo source files before public URL scraping.",
+        "Includes all five canonical public positioning routes in source notes or PR context when relevant.",
+        "Does not explore unrelated marketing pages, docs, changelogs, launch copy, blogs, or landing-v2.md.",
+        "Opens no PR when canonical source content does not warrant a durable guide change."
+      ]
+    }
+  ]
+}

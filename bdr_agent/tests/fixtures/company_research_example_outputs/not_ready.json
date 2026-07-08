@@ -1,0 +1,24 @@
+{
+  "schema_version": "bdr_agent_company_research.v1",
+  "stage": "company_research",
+  "trigger_source": "inbound_oz_campaign_pdf_download",
+  "hydration": {
+    "resolved_company_domain": null,
+    "resolved_company_domain_source": null,
+    "hydration_status": "not_ready",
+    "missing_fields": ["contact"]
+  },
+  "tier_1_internal_metrics": {
+    "status": "not_run"
+  },
+  "tier_2_public_company_research": {
+    "status": "not_run"
+  },
+  "tier_3_external_research": {
+    "status": "skipped",
+    "reason": "tier_3_disabled_for_mvp"
+  },
+  "storage": {
+    "status": "not_persisted"
+  }
+}

@@ -1,0 +1,51 @@
+# CI: security scanning, dependency audit, and tests.
+# NOTE: third-party actions are pinned to tags for readability. For stricter
+# supply-chain safety, pin each action to a full commit SHA.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: read-only by default.
+permissions:
+  contents: read
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history for secret scanning
+
+      - name: TruffleHog (secret scan)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: pip-audit (dependency audit)
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt --ignore-vuln CVE-2025-69872
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          python -m unittest discover -s tests -t .
+          PYTHONPATH="$PWD/bdr_agent/src" python -m unittest discover -s bdr_agent/tests -p 'test_*.py'

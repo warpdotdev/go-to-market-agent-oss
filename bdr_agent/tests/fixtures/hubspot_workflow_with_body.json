@@ -1,0 +1,20 @@
+{
+  "id": "0000000000",
+  "name": "[TEST] BDR Agent PDF lead qualification + 30m wait - disabled",
+  "isEnabled": false,
+  "objectTypeId": "0-136",
+  "type": "PLATFORM_FLOW",
+  "actions": [
+    {
+      "type": "WEBHOOK",
+      "method": "POST",
+      "webhookUrl": "https://budserver.example/webhooks/bdr-agent-pdf-lead",
+      "requestBody": {
+        "lead_id": {
+          "type": "OBJECT_PROPERTY",
+          "propertyName": "hs_object_id"
+        }
+      }
+    }
+  ]
+}

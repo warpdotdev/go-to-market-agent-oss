@@ -1,0 +1,106 @@
+{
+  "schema_version": "bdr_agent_company_research.v1",
+  "stage": "company_research",
+  "trigger_source": "inbound_oz_campaign_pdf_download",
+  "run_id": "company_run_123",
+  "output_id": "company_output_123",
+  "generated_at": "2026-05-19T00:00:00+00:00",
+  "lead": {
+    "lead_id": "lead_123",
+    "created_at": "2026-05-18T00:00:00+00:00"
+  },
+  "contact": {
+    "contact_id": "contact_123",
+    "email": "ada@example.com",
+    "first_name": "Ada",
+    "last_name": "Lovelace",
+    "job_title": "VP Engineering",
+    "associated_company_id": "company_123"
+  },
+  "company": {
+    "company_id": "company_123",
+    "company_name": "Example",
+    "email_domain": "example.com",
+    "alternative_email_domain": null,
+    "website": "https://example.com",
+    "industry": "Software",
+    "num_employees": 500,
+    "icp_tier": "tier_1"
+  },
+  "hydration": {
+    "resolved_company_domain": "example.com",
+    "resolved_company_domain_source": "company.email_domain",
+    "hydration_status": "hydrated",
+    "missing_fields": []
+  },
+  "tier_1_internal_metrics": {
+    "status": "found",
+    "email_domain": "example.com",
+    "metrics_as_of": "2026-05-18T00:00:00+00:00",
+    "is_enterprise_domain": false,
+    "metrics": {
+      "known_users_total": 100,
+      "active_users_30d": 42,
+      "active_users_90d": 55,
+      "avg_wau_last_4_weeks": 12.5,
+      "agent_mode_requests_30d": 120,
+      "total_credits_30d": 1000,
+      "teams_total": 2,
+      "active_subscription_teams": 1
+    },
+    "is_public_email_domain": false,
+    "has_product_usage": true,
+    "has_recent_product_usage": true,
+    "has_paid_signal": true,
+    "data_notes": []
+  },
+  "tier_2_public_company_research": {
+    "status": "found",
+    "strategy": "exa_positioning_guided_company_owned_search_v1",
+    "positioning_taxonomy_version": "product_positioning_research_v1",
+    "reuse_status": "fresh",
+    "findings": [
+      {
+        "finding_id": "tier2_001",
+        "signal_type": "agentic_development",
+        "fact": "Example has company-owned content related to AI agents for engineering productivity.",
+        "source_type": "engineering_blog",
+        "source_url": "https://example.com/engineering/ai-agents",
+        "source_title": "AI agents at Example",
+        "published_at": "2026-05-01T00:00:00Z",
+        "evidence_quote": "Example uses AI agents to improve developer productivity across engineering teams.",
+        "confidence": "high"
+      }
+    ],
+    "source_attempts": [
+      {
+        "query": "site:example.com \"AI agents\"",
+        "scope": "example.com",
+        "num_results_requested": 3,
+        "result_count": 1,
+        "kept_findings": 1,
+        "cost_dollars": 0.007
+      }
+    ],
+    "external_service_cost_dollars": 0.007
+  },
+  "tier_3_external_research": {
+    "status": "skipped",
+    "reason": "tier_3_disabled_for_mvp"
+  },
+  "reuse": {
+    "reuse_key": "example.com",
+    "reuse_status": "fresh",
+    "reused_tiers": [],
+    "reused_from_run_id": null,
+    "reused_from_output_id": null,
+    "reused_at": null,
+    "non_reuse_reason": "no_prior_output"
+  },
+  "storage": {
+    "status": "persisted",
+    "gcs_uri": "gs://example-artifacts-bucket/bdr-agent/company_research/company_run_123/company_output_123.json",
+    "bigquery_table": "example-gcp-project.gtm_agents.bdr_agent_company_research_outputs",
+    "bigquery_row_id": "company_output_123"
+  }
+}

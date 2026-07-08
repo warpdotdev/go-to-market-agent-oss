@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+reports/
+out/
+# Generated runtime cache (previously committed with real data)
+plg_upsell/scripts/domain_to_company_id.json
