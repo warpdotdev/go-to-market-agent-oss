@@ -24,7 +24,7 @@ Work from the repo root for everything that follows. All paths and commands belo
 
 ## 2. Check prerequisites
 
-- **Python 3.10+** is required (`fastmcp>=2.0` needs it; CI runs 3.12). Check with `python3 --version`. On macOS, the Homebrew binary is typically `/opt/homebrew/bin/python3` if the system Python is too old.
+- **Python 3.10+** is required (the `fastmcp` dependency needs it; CI runs 3.12). Check with `python3 --version`. On macOS, the Homebrew binary is typically `/opt/homebrew/bin/python3` if the system Python is too old.
 - `git` (already satisfied by step 1).
 
 If Python is too old, help the user install a newer one before continuing.
