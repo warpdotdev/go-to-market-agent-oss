@@ -2,22 +2,32 @@
 
 Home for Warp's GTM (go-to-market) agents — purpose-built systems that help reps move from raw signals to scored, actionable outreach.
 
-## Setup
-### Prerequisites
+## How to deploy
+The fastest path: open this repo in [Warp](https://www.warp.dev) and paste this prompt into the agent input:
+```text
+Run the setup skill
+```
+The agent picks up [`.warp/skills/setup/SKILL.md`](.warp/skills/setup/SKILL.md), which installs dependencies, validates the install with the test suites, walks you through `.env` configuration for the agents you care about, and points you at per-agent deployment docs.
+
+Or follow the manual steps below.
+### Manual setup (reference)
+**Prerequisites**
 - **Python 3.10+** (the `fastmcp` dependency requires it; CI runs 3.12).
 - For live runs only: a **Google Cloud project with BigQuery**, a **HubSpot private app token**, and (for Slack digests) a **Slack bot token**. The test suites run with no credentials.
-### Install
+
+**Install**
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
-### Configure environment
-Copy the example file and fill in real values:
+
+**Configure environment**
 ```bash
 cp .env.example .env
 ```
 `.env` is git-ignored. Every variable ships with a placeholder default (e.g. `example-gcp-project`) so the code imports and tests cleanly with no configuration; set real values to run against your own infrastructure. For Google Cloud auth, either set `GCP_SERVICE_ACCOUNT_JSON` or use Application Default Credentials (`gcloud auth application-default login`). See `.env.example` and `CONTRIBUTING.md` for the full variable reference.
-### Run tests
+
+**Run tests**
 ```bash
 # Shared hubspot_agent + PLG tests
 python3 -m unittest discover -s tests -t .
@@ -25,7 +35,8 @@ python3 -m unittest discover -s tests -t .
 # BDR agent tests (src layout)
 PYTHONPATH="$PWD/bdr_agent/src" python3 -m unittest discover -s bdr_agent/tests -p 'test_*.py'
 ```
-Per-agent setup, configuration, and run instructions live in each agent's README (`plg_upsell/README.md`, `bdr_agent/README.md`).
+
+Per-agent setup, configuration, and deployment instructions (warehouse mapping, HubSpot/Slack one-time setup, Oz cloud scheduling) live in each agent's README (`plg_upsell/README.md`, `bdr_agent/README.md`).
 
 ## Agents
 
