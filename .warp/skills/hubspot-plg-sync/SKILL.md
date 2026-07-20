@@ -59,7 +59,7 @@ All bullets are pure signal framing (account + what changed + time window) — n
    python3 -m venv .venv
    .venv/bin/python -m pip install -r requirements.txt
    ```
-   > Note: Use Python 3.10+ — `fastmcp>=2.0` requires it. On macOS the Homebrew binary is typically `/opt/homebrew/bin/python3`.
+   > Note: Use Python 3.10+ — the `fastmcp` dependency requires it. On macOS the Homebrew binary is typically `/opt/homebrew/bin/python3`.
 
 2. Write HubSpot credentials to `.env` (fallback for scripts that read from file):
    ```
