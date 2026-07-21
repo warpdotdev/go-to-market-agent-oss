@@ -26,6 +26,9 @@ Work from the repo root for everything that follows. All paths and commands belo
 
 - **Python 3.10+** is required (the `fastmcp` dependency needs it; CI runs 3.12). Check with `python3 --version`. On macOS, the Homebrew binary is typically `/opt/homebrew/bin/python3` if the system Python is too old.
 - `git` (already satisfied by step 1).
+- **Oz CLI** — only needed for Oz cloud runs and scheduling (step 7). Verify with `oz whoami`:
+  - **Command not found** → if the [Warp app](https://docs.warp.dev/getting-started/installation-and-setup) is already installed, the CLI ships with it. Otherwise, prefer the standalone Oz CLI — there is no need to install the full Warp app just for the CLI. See [Installing the CLI](https://docs.warp.dev/reference/cli#installing-the-cli); on macOS: `brew tap warpdotdev/warp && brew install --cask oz`.
+  - **Not authenticated** → run `oz login` (interactive), or for CI/headless environments export `WARP_API_KEY`.
 
 If Python is too old, help the user install a newer one before continuing.
 
